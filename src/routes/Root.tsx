@@ -3,17 +3,17 @@ import { register } from "../api/register";
 
 import "../App.css";
 
-export type RegisterRequest = {
-  request: Request;
-};
+export async function action({ request }: { request: Request }) {
+  try {
+    const formData = await request.formData();
+    const data = Object.fromEntries(formData);
+    console.log(typeof data);
 
-export async function action({ request }: RegisterRequest) {
-  const formData = await request.formData();
-  const data = Object.fromEntries(formData);
-  console.log(typeof data);
-
-  const user = await register(data);
-  return redirect("/login");
+    const user = await register(data);
+    return redirect("/login");
+  } catch (error) {
+    console.log(error);
+  }
 }
 
 export default function Root() {
